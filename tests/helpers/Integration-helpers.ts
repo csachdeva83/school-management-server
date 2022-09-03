@@ -1,9 +1,9 @@
 import * as express from 'express';
-import App from '../../src/App';
 import createLogger from '../../src/lib/logger';
 import { setGlobalEnvironment } from '../../src/global';
 import Environment from '../../src/environments/environment';
 import { Environments } from '../../src/environments/environment.constant';
+import App from '../../src/app';
 
 const logger = createLogger('integration-helpers');
 

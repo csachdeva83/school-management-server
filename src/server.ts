@@ -1,9 +1,10 @@
 import * as http from 'http';
 import { AddressInfo } from 'net';
 import { setGlobalEnvironment } from './global';
-import App  from './App';
+import App  from './app';
 import Environment from './environments/environment';
 import createLogger from './lib/logger';
+import { initializeDB } from './configs/db.config';
 
 const logger = createLogger('server.ts');
 
@@ -32,6 +33,7 @@ app.init().then(() => {
     server.on('error', serverError);
     server.on('listening', serverListening);
     server.listen(env.port);
+    initializeDB();
 }).catch((err: Error) => {
     logger.info('app.init error');
     logger.error(err.name);

@@ -40,8 +40,7 @@ export default class App {
         this.express.use(cors());
     }
 
-    private parseRequestHeader(req: express.Request, res: express.Response, next: Function): void {
-        console.log(req.headers.access_token);
+    private parseRequestHeader(req: express.Request, res: express.Response, next: express.NextFunction): void {
         next();
     }
 
