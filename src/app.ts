@@ -3,7 +3,6 @@ import express from 'express';
 import http from 'http';
 import helmet from 'helmet';
 import registerRoutes from './routes';
-import addErrorHandler from './middleware/error-handler';
 
 export default class App {
     public express: express.Application;
@@ -15,7 +14,6 @@ export default class App {
         this.httpServer = http.createServer(this.express);
         this.middleware();
         this.routes();
-        this.addErrorHandler();
     }
 
     /**
@@ -48,7 +46,4 @@ export default class App {
         response.json({ message : 'base path' });
     }
 
-    private addErrorHandler(): void {
-        this.express.use(addErrorHandler);
-    }
 }
