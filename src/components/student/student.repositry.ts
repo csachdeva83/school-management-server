@@ -1,6 +1,6 @@
-import { ResultSetHeader } from 'mysql2';
+import { format, ResultSetHeader } from 'mysql2';
 import createLogger from '../../lib/logger';
-import CreateStudent from './create-student.request';
+import CreateStudent from './request/create-student.request';
 import Student from './student.model';
 import { StudentSql } from './student.sql';
 
@@ -17,8 +17,6 @@ export class StudentRepositry extends Student{
 
             logger.info(`Creating a new student => ${JSON.stringify(student)}`);
 
-            // const studentSql = new StudentSql();
-
             POOL.getConnection((err, connection) => {
                 if (err) {
                     logger.error("Couldn't get connection");
@@ -34,7 +32,7 @@ export class StudentRepositry extends Student{
                         reject(err1);
                         return;
                     }
-                    logger.info('Transaction began for creating user');
+                    logger.info('Transaction began for creating student');
                     connection.query(this.studentSql.CREATE_PASSWORD, [salt, hash], (err2, result: ResultSetHeader) => {
                         
                         
@@ -66,13 +64,13 @@ export class StudentRepositry extends Student{
                                 if (err3) {
                                     connection.rollback(() => {
                                         connection?.release();
-                                        logger.error("Couldn't create user");
+                                        logger.error("Couldn't create student");
                                         reject(err3);
                                     });
                                     return;
                                 }
 
-                                logger.info('Created User');
+                                logger.info('Created student');
                                 connection.commit((err4) => {
                                     logger.info('Commiting Changes');
                                     if (err4) {

@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import makeValidateBody from '../../middleware/request-body-validator';
 import createLogger from '../../lib/logger';
 import BaseApi from '../base-api';
-import CreateStudent from './create-student.request';
+import CreateStudent from './request/create-student.request';
 import CustomRequest from '../../abstractions/custom-request';
 import ApiResponse from '../../abstractions/api-responses';
 import Student from './student.model';
@@ -18,7 +18,7 @@ export default class StudentController extends BaseApi {
     constructor(express: Application, private studentService = new StudentService()) {
         super();
         this.register(express);
-        // if (process.env.pm_id === '0') logger.info(`Registering ${JSON.stringify(logger.defaultMeta?.service)}`);
+        if (process.env.pm_id === '0') logger.info(`Registering ${JSON.stringify(logger.defaultMeta?.service)}`);
     }
 
 
@@ -27,11 +27,47 @@ export default class StudentController extends BaseApi {
         this.router.post('/create', makeValidateBody(CreateStudent), this.createStudent);
     }
 
+    /**
+     * Create new student 
+     * 
+     * @api {post} /student/create 
+     * @apiParamExample (Request body) {json} Input
+     * {
+     *      "firstName" : "Harry",
+     *      "lastName" : "Potter",
+     *      "birthDate" : "2002-16-09",
+     *      "phoneNumber" : "+14084991635",
+     *      "email" : "harry@yahoo.com",
+     *      "classId": "11D",
+     *      "password": "11223344"
+     * }
+     * @apiSuccessExample {json} Success
+     *   {
+     *       statusCode: 200,
+     *       status : SUCCESS,
+     *       data: {
+     *          "firstName" : "Harry",
+     *          "lastName" : "Potter",
+     *          "birthDate" : "2002-16-09",
+     *          "phoneNumber" : "+14084991635",
+     *          "email" : "harry@yahoo.com",
+     *          "classId": "11D",
+     *       },
+     *       message: Student created successfully  
+     *   }
+     *  
+     * @apiErrorExample {json} Failure
+     *  {
+     *       status: ERROR || FAILURE,
+     *       statusCode: INTERNAL_SERVER_ERROR || BAD_REQUEST,
+     *       name: Error || ApiError,
+     *       message: err.message || Student could not be created
+     *   }
+     */
     public createStudent = async (req: CustomRequest<CreateStudent>, res: Response<ApiResponse<Student> | ApiError>) => {
         try {
 
-            logger.info('creating a new user');
-            // const studentService = new StudentService();
+            logger.info('creating a new student');
 
             const isCreated = await this.studentService.create(req?.body);
             if (isCreated) {
@@ -61,7 +97,7 @@ export default class StudentController extends BaseApi {
             else {
                 logger.error(err?.message);
                 logger.error(err?.stack);
-                res.status(err?.statusCode ?? StatusCodes.INTERNAL_SERVER_ERROR)
+                res.status(err?.statusCode ?? StatusCodes.BAD_REQUEST)
                     .send(new ApiError(err?.statusCode, 'ERROR', err.message, err.name));
             }
         }

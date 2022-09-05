@@ -7,7 +7,6 @@ interface IEnvironment {
     isProductionEnvironment(): boolean;
     isDevEnvironment(): boolean;
     isTestEnvironment(): boolean;
-    isStagingEnvironment(): boolean;
 }
 
 export default IEnvironment;

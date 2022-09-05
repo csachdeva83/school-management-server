@@ -32,12 +32,11 @@ class Environment implements IEnvironment {
         case Environments.PRODUCTION:
           return Environments.PRODUCTION;
         case Environments.DEV:
+            return Environments.DEV;
         case Environments.TEST:
-        case Environments.QA:
-          return Environments.TEST;
-        case Environments.STAGING:
-          return Environments.STAGING;
+            return Environments.TEST;
         case Environments.LOCAL:
+            return Environments.LOCAL;
         default:
           return Environments.LOCAL;
       }
@@ -45,16 +44,13 @@ class Environment implements IEnvironment {
 
     public setEnvironment(env: string): void {
       let envPath: string;
-      const rootdir : string = path.resolve(__dirname, '../../');
+      const rootdir: string = path.resolve(__dirname, (process.env.NODE_ENV === 'production') ? '../../../' : '../../');
       switch (env) {
         case Environments.PRODUCTION:
           envPath = path.resolve(rootdir, EnvironmentFile.PRODUCTION);
           break;
         case Environments.TEST:
           envPath = path.resolve(rootdir, EnvironmentFile.TEST);
-          break;
-        case Environments.STAGING:
-          envPath = path.resolve(rootdir, EnvironmentFile.STAGING);
           break;
         case Environments.LOCAL:
           envPath = path.resolve(rootdir, EnvironmentFile.LOCAL);
@@ -78,10 +74,6 @@ class Environment implements IEnvironment {
 
     public isTestEnvironment(): boolean {
       return this.getCurrentEnvironment() === Environments.TEST;
-    }
-
-    public isStagingEnvironment(): boolean {
-      return this.getCurrentEnvironment() === Environments.STAGING;
     }
 
 }

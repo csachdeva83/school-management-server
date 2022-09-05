@@ -29,6 +29,7 @@ export const initializeDB = () => {
     });
 
 };
+
 export const destructDB = () => {
     logger.info('Destructing DB');
     global?.POOL?.end();
