@@ -2,18 +2,14 @@ enum Environments {
     LOCAL = 'local',
     PRODUCTION = 'production',
     DEV = 'dev',
-    TEST = 'test',
-    QA = 'qa',
-    STAGING = 'staging',
+    TEST = 'test'
 }
 
 enum EnvironmentFile {
     LOCAL = '.env',
-    PRODUCTION = '.env.prod',
+    PRODUCTION = '.env.production',
     DEV = '.env',
     TEST = '.env.test',
-    QA = '.env.stag',
-    STAGING = '.env.stag',
 }
 
 export {
