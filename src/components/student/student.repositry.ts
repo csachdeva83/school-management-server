@@ -1,4 +1,4 @@
-import { format, ResultSetHeader } from 'mysql2';
+import {  ResultSetHeader } from 'mysql2';
 import createLogger from '../../lib/logger';
 import CreateStudent from './request/create-student.request';
 import Student from './student.model';
@@ -6,8 +6,8 @@ import { StudentSql } from './student.sql';
 
 const logger = createLogger('Student Repositry');
 
-export class StudentRepositry extends Student{
-    
+export class StudentRepositry extends Student {
+
     constructor(private studentSql = new StudentSql()) {
         super();
     }
@@ -24,7 +24,7 @@ export class StudentRepositry extends Student{
                     return;
                 }
                 logger.info('Got connection from pool');
-                
+
                 connection.beginTransaction((err1) => {
                     if (err1) {
                         logger.error("Couldn't begin transaction");
@@ -34,8 +34,8 @@ export class StudentRepositry extends Student{
                     }
                     logger.info('Transaction began for creating student');
                     connection.query(this.studentSql.CREATE_PASSWORD, [salt, hash], (err2, result: ResultSetHeader) => {
-                        
-                        
+
+
                         if (err2) {
                             connection.rollback(() => {
                                 logger.error("Couldn't create password");
@@ -45,7 +45,7 @@ export class StudentRepositry extends Student{
                             return;
                         }
                         logger.info('Created Password');
-                        
+
                         // eslint-disable-next-line no-param-reassign
                         student.passwordId = result.insertId;
 
@@ -80,11 +80,11 @@ export class StudentRepositry extends Student{
                                             reject(err4);
                                         });
                                     }
-                                    else{
+                                    else {
                                         logger.info('Resolving promise');
-                                        
+
                                         connection?.release();
-                                        resolve(resultSet2.affectedRows === 1);        
+                                        resolve(resultSet2.affectedRows === 1);
                                     }
                                 });
                             }
@@ -95,5 +95,24 @@ export class StudentRepositry extends Student{
             });
 
         });
+    };
+
+    public async getbyEmail( emailId: string): Promise<Student> {
+        return new Promise((resolve, reject) => {
+
+            logger.info(`Getting student details by email id => ${emailId}`);
+
+            const sqlQuery = this.studentSql.GET_STUDENT_DETAILS_BY_EMAIL_ID;
+            POOL.query(sqlQuery, [emailId], (err, resultSet: ResultSetHeader) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+
+                resolve(resultSet?.[0]);
+            });
+
+        });
+
     };
 };

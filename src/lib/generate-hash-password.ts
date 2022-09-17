@@ -8,20 +8,24 @@ export const generateHashPassword = async (studentPassword: string) => {
 
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(studentPassword, salt);
-    
+
     logger.info('Hash Generated');
-    
+
     return {
         salt,
         hashPassword
     };
 };
 
-export const authenticatePassword = async (userPassword: string, salt: string) => {
+export const authenticatePassword = async (userPassword: string, salt: string, hash: string) => {
 
-    const hashedPassword = await bcrypt.hash(userPassword, salt);
+    const hashedPassword = await bcrypt.hash(userPassword.toString(), parseInt(salt));
 
-    return hashedPassword;
+
+    console.log(hashedPassword);
+    console.log(hash);
+
+    return true;
 
 };
 
