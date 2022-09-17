@@ -13,6 +13,8 @@ class Environment implements IEnvironment {
 
     public applyEncryption: boolean;
 
+    public jwtSecretToken: string;
+
     constructor(NODE_ENV?: string) {
       const env: string= NODE_ENV || process.env.NODE_ENV || Environments.DEV;
       const port: string | undefined | number = process.env.PORT || 5000;
@@ -20,6 +22,7 @@ class Environment implements IEnvironment {
       this.port = Number(port);
       this.applyEncryption = JSON.parse(process.env.APPLY_ENCRYPTION);
       this.secretKey =  process.env.SECRET_KEY;
+      this.jwtSecretToken = process.env.JWT_SECRET_TOKEN;
     }
 
     public getCurrentEnvironment(): string {
