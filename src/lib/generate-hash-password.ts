@@ -22,7 +22,6 @@ export const generateHashPassword = async (studentPassword: string) => {
 export const hashPasswordWithGivenSalt = async (userPassword: string, salt: string) => {
 
     const hashedPassword = await bcrypt.hash(userPassword, salt);
-
     return hashedPassword;
 
 };

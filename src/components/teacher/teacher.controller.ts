@@ -31,30 +31,34 @@ export default class TeacherController extends BaseApi {
      * 
      * @api {post} /teacher/create 
      * @apiParamExample (Request body) {json} Input
-     * {
-     *      "firstName" : "Harry",
-     *      "lastName" : "Potter",
-     *      "birthDate" : "2002-16-09",
-     *      "phoneNumber" : "+14084991635",
-     *      "email" : "harry@yahoo.com",
-     *      "classId": "11D",
-     *      "password": "11223344",
-     *      "imageLink": "https://bit.ly/3DuVvYN"  
-     * }
+     *   {
+     *       "id": null,
+     *       "firstName" : "Anil",
+     *       "lastName" : "Batra",
+     *       "birthDate" : "1975-03-06",
+     *       "phoneNumber" : "+14084991635",
+     *       "email" : "AnilBat@gmail.com",
+     *       "subjectName": "Physics", 
+     *       "password": "11223344",
+     *       "passwordId": null,
+     *       "imageLink": "shorturl.at/abT69",
+     *       "schoolId": 1,
+     *       "subjectIds": [1,5]
+     *   }
      * @apiSuccessExample {json} Success
      *   {
-     *       statusCode: 200,
-     *       status : SUCCESS,
-     *       data: {
-     *          "firstName" : "Harry",
-     *          "lastName" : "Potter",
-     *          "birthDate" : "2002-16-09",
-     *          "phoneNumber" : "+14084991635",
-     *          "email" : "harry@yahoo.com",
-     *          "classId": "11D",
-     *          "imageLink": "https://bit.ly/3DuVvYN"
+     *       "statusCode": 200,
+     *       "status": "SUCCESS",
+     *       "data": {
+     *           "firstName": "Anil",
+     *           "lastName": "Batra",
+     *           "birthDate": "1975-03-06",
+     *           "email": "AnilBat@gmail.com",
+     *           "phoneNumber": "+14084991635",
+     *           "subjectName": "Physics",
+     *           "imageLink": "shorturl.at/abT69"
      *       },
-     *       message: Student created successfully  
+     *       "message": "Teacher created successfully"
      *   }
      *  
      * @apiErrorExample {json} Failure
@@ -62,7 +66,7 @@ export default class TeacherController extends BaseApi {
      *       status: ERROR || FAILURE,
      *       statusCode: INTERNAL_SERVER_ERROR || BAD_REQUEST,
      *       name: Error || ApiError,
-     *       message: err.message || Student could not be created
+     *       message: err.message || Teacher could not be created
      *   }
      */
     public createTeacher = async (req: CustomRequest<CreateTeacher>, res: Response<ApiResponse<Teacher> | ApiError>) => {

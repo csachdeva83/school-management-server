@@ -23,7 +23,6 @@ export class TeacherRepositry extends Teacher{
                     reject(err);
                     return;
                 }
-
                 resolve(resultSet?.[0]);
             });
 

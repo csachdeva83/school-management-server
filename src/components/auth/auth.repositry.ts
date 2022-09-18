@@ -37,7 +37,7 @@ export class AuthRepositry {
                     reject(err);
                     return;
                 }
-
+                
                 resolve(resultSet?.[0]);
             });
 

@@ -33,6 +33,7 @@ export default class StudentController extends BaseApi {
      * @api {post} /student/create 
      * @apiParamExample (Request body) {json} Input
      * {
+     *      "id": null,    
      *      "firstName" : "Harry",
      *      "lastName" : "Potter",
      *      "birthDate" : "2002-16-09",
