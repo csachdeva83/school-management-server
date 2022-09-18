@@ -1,4 +1,4 @@
-import { format, ResultSetHeader } from 'mysql2';
+import { ResultSetHeader } from 'mysql2';
 import createLogger from '../../lib/logger';
 import CreateStudent from './request/create-student.request';
 import Student from './student.model';
@@ -33,7 +33,7 @@ export class StudentRepositry extends Student{
                         return;
                     }
                     logger.info('Transaction began for creating student');
-                    connection.query(this.studentSql.CREATE_PASSWORD, [salt, hash], (err2, result: ResultSetHeader) => {
+                    connection.query(this.studentSql.CREATE_PASSWORD, [salt, hash], (err2, resultSet1: ResultSetHeader) => {
                         
                         
                         if (err2) {
@@ -47,49 +47,67 @@ export class StudentRepositry extends Student{
                         logger.info('Password Created');
                         
                         // eslint-disable-next-line no-param-reassign
-                        student.passwordId = result.insertId;
+                        student.passwordId = resultSet1.insertId;
 
-                        connection.query(
-                            this.studentSql.CREATE_STUDENT,
-                            [
-                                student.firstName,
-                                student.lastName,
-                                student.birthDate,
-                                student.phoneNumber,
-                                student.email,
-                                student.classId,
-                                student.passwordId,
-                                student.imageLink
-                            ],
-                            (err3, resultSet2: ResultSetHeader) => {
-                                if (err3) {
-                                    connection.rollback(() => {
-                                        connection?.release();
-                                        logger.error("Couldn't create student");
-                                        reject(err3);
-                                    });
-                                    return;
-                                }
-
-                                logger.info('Created student');
-                                connection.commit((err4) => {
-                                    logger.info('Commiting Changes');
+                        connection.query(this.studentSql.GET_NEW_STUDENT_ID,[],(err3, resultSet2: ResultSetHeader) => {
+                            if(err3){
+                                connection.rollback(() => {
+                                    logger.error("Couldn't create student id");
+                                    connection?.release();
+                                    reject(err3);
+                                });
+                                return;
+                            }
+                            logger.info(`Student Id => ${resultSet2[0].idNumber}`);
+                             
+                            // eslint-disable-next-line no-param-reassign
+                            student.id = resultSet2[0].idNumber;
+                        
+                            connection.query(
+                                this.studentSql.CREATE_STUDENT,
+                                [
+                                    student.id,
+                                    student.firstName,
+                                    student.lastName,
+                                    student.birthDate,
+                                    student.phoneNumber,
+                                    student.email,
+                                    student.classId,
+                                    student.passwordId,
+                                    student.imageLink,
+                                    student.schoolId
+                                ],
+                                (err4, resultSet3: ResultSetHeader) => {
                                     if (err4) {
-                                        logger.error("Couldn't commit to database");
                                         connection.rollback(() => {
                                             connection?.release();
+                                            logger.error("Couldn't create student");
                                             reject(err4);
                                         });
+                                        return;
                                     }
-                                    else{
-                                        logger.info('Resolving promise');
-                                        
-                                        connection?.release();
-                                        resolve(resultSet2.affectedRows === 1);        
-                                    }
-                                });
-                            }
-                        );
+    
+                                    logger.info('Created student');
+                                    connection.commit((err5) => {
+                                        logger.info('Commiting Changes');
+                                        if (err5) {
+                                            logger.error("Couldn't commit to database");
+                                            connection.rollback(() => {
+                                                connection?.release();
+                                                reject(err5);
+                                            });
+                                        }
+                                        else{
+                                            logger.info('Resolving promise');
+                                            
+                                            connection?.release();
+                                            resolve(resultSet3.affectedRows === 1);        
+                                        }
+                                    });
+                                }
+                            );
+                        });
+
                     });
 
                 });

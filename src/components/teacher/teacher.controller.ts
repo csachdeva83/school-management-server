@@ -3,19 +3,18 @@ import { StatusCodes } from 'http-status-codes';
 import makeValidateBody from '../../middleware/request-body-validator';
 import createLogger from '../../lib/logger';
 import BaseApi from '../base-api';
-import CreateStudent from './request/create-student.request';
+import CreateTeacher from './request/create-teacher.request';
 import CustomRequest from '../../abstractions/custom-request';
 import ApiResponse from '../../abstractions/api-responses';
-import Student from './student.model';
+import Teacher from './teacher.model';
 import ApiError from '../../abstractions/api-error';
-import { StudentService } from './student.service';
+import { TeacherService } from './teacher.service';
 
-const logger = createLogger('Student Controller');
+const logger = createLogger('Teacher Controller');
 
-
-export default class StudentController extends BaseApi {
+export default class TeacherController extends BaseApi {
     
-    constructor(express: Application, private studentService = new StudentService()) {
+    constructor(express: Application, private teacherService = new TeacherService()) {
         super();
         this.register(express);
         if (process.env.pm_id === '0') logger.info(`Registering ${JSON.stringify(logger.defaultMeta?.service)}`);
@@ -23,14 +22,14 @@ export default class StudentController extends BaseApi {
 
 
     public register(express: Application): void {
-        express.use('/student', this.router);
-        this.router.post('/create', makeValidateBody(CreateStudent), this.createStudent);
+        express.use('/teacher', this.router);
+        this.router.post('/create', makeValidateBody(CreateTeacher), this.createTeacher);
     }
 
     /**
-     * Create new student 
+     * Create new teacher 
      * 
-     * @api {post} /student/create 
+     * @api {post} /teacher/create 
      * @apiParamExample (Request body) {json} Input
      * {
      *      "firstName" : "Harry",
@@ -40,8 +39,7 @@ export default class StudentController extends BaseApi {
      *      "email" : "harry@yahoo.com",
      *      "classId": "11D",
      *      "password": "11223344",
-     *      "imageLink": "https://bit.ly/3DuVvYN",
-     *      "schoolId": 1  
+     *      "imageLink": "https://bit.ly/3DuVvYN"  
      * }
      * @apiSuccessExample {json} Success
      *   {
@@ -67,28 +65,28 @@ export default class StudentController extends BaseApi {
      *       message: err.message || Student could not be created
      *   }
      */
-    public createStudent = async (req: CustomRequest<CreateStudent>, res: Response<ApiResponse<Student> | ApiError>) => {
+    public createTeacher = async (req: CustomRequest<CreateTeacher>, res: Response<ApiResponse<Teacher> | ApiError>) => {
         try {
 
-            logger.info('Create a new student');
+            logger.info('Create a new teacher');
 
-            const isCreated = await this.studentService.create(req?.body);
+            const isCreated = await this.teacherService.create(req?.body);
             if (isCreated) {
-                const newStudent = new Student();
-                newStudent.firstName = req?.body?.firstName;
-                newStudent.lastName = req?.body?.lastName;
-                newStudent.birthDate = req?.body?.birthDate;
-                newStudent.email = req?.body?.email;
-                newStudent.phoneNumber = req?.body?.phoneNumber;
-                newStudent.classId = req?.body?.classId;
-                newStudent.imageLink = req.body?.imageLink;
+                const newTeacher = new Teacher();
+                newTeacher.firstName = req?.body?.firstName;
+                newTeacher.lastName = req?.body?.lastName;
+                newTeacher.birthDate = req?.body?.birthDate;
+                newTeacher.email = req?.body?.email;
+                newTeacher.phoneNumber = req?.body?.phoneNumber;
+                newTeacher.subjectName = req?.body?.subjectName;
+                newTeacher.imageLink = req.body?.imageLink;
 
                 res.status(StatusCodes.OK)
-                    .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', newStudent, 'Student created successfully'));
+                    .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', newTeacher, 'Teacher created successfully'));
             }
             else {
                 res.status(StatusCodes.EXPECTATION_FAILED)
-                    .send(new ApiError(StatusCodes.EXPECTATION_FAILED, 'FAILURE', 'Student could not be created'));
+                    .send(new ApiError(StatusCodes.EXPECTATION_FAILED, 'FAILURE', 'Teacher could not be created'));
             }
 
         } catch (err: any) {
@@ -106,7 +104,5 @@ export default class StudentController extends BaseApi {
             }
         }
     };
-
-    
 
 };
