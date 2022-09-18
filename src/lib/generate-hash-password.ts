@@ -3,6 +3,7 @@ import createLogger from './logger';
 
 const logger = createLogger('Password');
 
+// generate hash password by generating a new salt
 export const generateHashPassword = async (studentPassword: string) => {
     logger.info('Generating hashed password');
 
@@ -17,10 +18,10 @@ export const generateHashPassword = async (studentPassword: string) => {
     };
 };
 
-export const authenticatePassword = async (userPassword: string, salt: string) => {
+// generate hash password by given salt
+export const hashPasswordWithGivenSalt = async (userPassword: string, salt: string) => {
 
     const hashedPassword = await bcrypt.hash(userPassword, salt);
-
     return hashedPassword;
 
 };

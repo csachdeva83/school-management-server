@@ -1,6 +1,6 @@
-import { IsPhoneNumber, IsEmail, MaxLength, IsOptional } from 'class-validator';
+import { IsPhoneNumber, IsEmail, IsOptional } from 'class-validator';
 
-export default class Student {
+export default class Teacher {
     
     public firstName: string;
 
@@ -16,11 +16,8 @@ export default class Student {
     })
     public email: string;
 
-    @MaxLength(3,{
-        message: 'Please provide valid class Id'
-    })
-    public classId: string;
-
+    public subjectName: string;
+    
     @IsOptional()
     public imageLink: string;
 

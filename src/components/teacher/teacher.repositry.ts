@@ -1,21 +1,39 @@
 import { ResultSetHeader } from 'mysql2';
 import createLogger from '../../lib/logger';
-import CreateStudent from './request/create-student.request';
-import Student from './student.model';
-import { StudentSql } from './student.sql';
+import Teacher from './teacher.model';
+import { TeacherSql } from './teacher.sql';
+import CreateTeacher from './request/create-teacher.request';
 
-const logger = createLogger('Student Repositry');
+const logger = createLogger('Teacher Repositry');
 
-export class StudentRepositry extends Student{
+export class TeacherRepositry extends Teacher{
     
-    constructor(private studentSql = new StudentSql()) {
+    constructor(private teacherSql = new TeacherSql()) {
         super();
     }
 
-    public async create(student: CreateStudent, salt: string, hash: string): Promise<boolean> {
+    public async getbyId( teacherId: string): Promise<Teacher> {
         return new Promise((resolve, reject) => {
 
-            logger.info(`Creating a new student => ${JSON.stringify(student)}`);
+            logger.info(`Get teacher details by id => ${teacherId}`);
+
+            const sqlQuery = this.teacherSql.GET_TEACHER_DETAILS_BY_ID;
+            POOL.query(sqlQuery, [teacherId], (err, resultSet: ResultSetHeader) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(resultSet?.[0]);
+            });
+
+        });
+
+    };
+
+    public async create(teacher: CreateTeacher, salt: string, hash: string): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+
+            logger.info(`Creating a new teacher => ${JSON.stringify(teacher)}`);
 
             POOL.getConnection((err, connection) => {
                 if (err) {
@@ -32,8 +50,8 @@ export class StudentRepositry extends Student{
                         reject(err1);
                         return;
                     }
-                    logger.info('Transaction began for creating student');
-                    connection.query(this.studentSql.CREATE_PASSWORD, [salt, hash], (err2, resultSet1: ResultSetHeader) => {
+                    logger.info('Transaction began for creating teacher');
+                    connection.query(this.teacherSql.CREATE_PASSWORD, [salt, hash], (err2, resultSet1: ResultSetHeader) => {
                         
                         
                         if (err2) {
@@ -47,54 +65,54 @@ export class StudentRepositry extends Student{
                         logger.info('Password Created');
                         
                         // eslint-disable-next-line no-param-reassign
-                        student.passwordId = resultSet1.insertId;
+                        teacher.passwordId = resultSet1.insertId;
 
-                        connection.query(this.studentSql.GET_NEW_STUDENT_ID,[],(err3, resultSet2: ResultSetHeader) => {
+                        connection.query(this.teacherSql.GET_NEW_TEACHER_ID,[],(err3, resultSet2: ResultSetHeader) => {
                             if(err3){
                                 connection.rollback(() => {
-                                    logger.error("Couldn't create student id");
+                                    logger.error("Couldn't create teacher id");
                                     connection?.release();
                                     reject(err3);
                                 });
                                 return;
                             }
-                            logger.info(`Student Id => ${resultSet2[0].idNumber}`);
+                            logger.info(`Teacher Id => ${resultSet2[0].idNumber}`);
                              
                             // eslint-disable-next-line no-param-reassign
-                            student.id = resultSet2[0].idNumber;
-                        
+                            teacher.id = resultSet2[0].idNumber;
+
                             connection.query(
-                                this.studentSql.CREATE_STUDENT,
+                                this.teacherSql.CREATE_TEACHER,
                                 [
-                                    student.id,
-                                    student.firstName,
-                                    student.lastName,
-                                    student.birthDate,
-                                    student.phoneNumber,
-                                    student.email,
-                                    student.classId,
-                                    student.passwordId,
-                                    student.imageLink,
-                                    student.schoolId
+                                    teacher.id,
+                                    teacher.firstName,
+                                    teacher.lastName,
+                                    teacher.birthDate,
+                                    teacher.phoneNumber,
+                                    teacher.email,
+                                    JSON.stringify(teacher.subjectIds),
+                                    teacher.passwordId,
+                                    teacher.imageLink,
+                                    teacher.schoolId
                                 ],
                                 (err4, resultSet3: ResultSetHeader) => {
                                     if (err4) {
                                         connection.rollback(() => {
                                             connection?.release();
-                                            logger.error("Couldn't create student");
+                                            logger.error("Couldn't create teacher");
                                             reject(err4);
                                         });
                                         return;
                                     }
     
-                                    logger.info('Created student');
+                                    logger.info('Created teacher');
                                     connection.commit((err5) => {
                                         logger.info('Commiting Changes');
                                         if (err5) {
                                             logger.error("Couldn't commit to database");
                                             connection.rollback(() => {
                                                 connection?.release();
-                                                reject(err5);
+                                                reject(err4);
                                             });
                                         }
                                         else{
@@ -106,32 +124,12 @@ export class StudentRepositry extends Student{
                                     });
                                 }
                             );
-                        });
-
+                        } );
                     });
 
                 });
             });
 
         });
-    };
-
-    public async getbyId( studentId: string): Promise<Student> {
-        return new Promise((resolve, reject) => {
-
-            logger.info(`Get student details by id => ${studentId}`);
-
-            const sqlQuery = this.studentSql.GET_STUDENT_DETAILS_BY_ID;
-            POOL.query(sqlQuery, [studentId], (err, resultSet: ResultSetHeader) => {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-
-                resolve(resultSet?.[0]);
-            });
-
-        });
-
     };
 };

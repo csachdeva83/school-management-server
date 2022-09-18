@@ -1,4 +1,4 @@
-import { IsInt, IsPhoneNumber, IsEmail, MaxLength, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsInt, IsPhoneNumber, IsEmail, MaxLength, IsNotEmpty, IsOptional, IsArray } from 'class-validator';
 
 export default class CreateStudent {
     
@@ -43,14 +43,6 @@ export default class CreateStudent {
     })
     public email: string;
 
-    @MaxLength(3,{
-        message: 'Please provide valid class Id'
-    })
-    @IsNotEmpty({
-        message: 'Class Id is required',
-    })
-    public classId: string;
-
     @MaxLength(30, {
         message: 'Password is maximum 30 character',
     })
@@ -59,14 +51,20 @@ export default class CreateStudent {
     })
     public password: string;
 
-    @IsInt({
-        message: 'Please provide valid password Id'
+    @IsNotEmpty({
+        message: 'Subject name is required',
     })
-    @IsOptional()
-    public passwordId: number;
-
-    @IsOptional()
-    public imageLink: string;
+    public subjectName: string;
+    
+    @IsInt({
+        message: 'Please provide valid subject Id',
+        each: true
+    })
+    @IsArray()
+    @IsNotEmpty({
+        message: 'Subject Ids are required',
+    })
+    public subjectIds: number[];
 
     @IsInt({
         message: 'Please provide valid school Id',
@@ -75,5 +73,15 @@ export default class CreateStudent {
         message: 'School Id is required',
     })
     public schoolId: number;
+
+    @IsOptional()
+    public imageLink: string;
+
+    @IsInt({
+        message: 'Please provide valid password Id'
+    })
+    @IsOptional()
+    public passwordId: number;
+
 
 };
