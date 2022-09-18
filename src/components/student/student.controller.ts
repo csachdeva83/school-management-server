@@ -39,7 +39,8 @@ export default class StudentController extends BaseApi {
      *      "phoneNumber" : "+14084991635",
      *      "email" : "harry@yahoo.com",
      *      "classId": "11D",
-     *      "password": "11223344"
+     *      "password": "11223344",
+     *      "imageLink": "https://bit.ly/3DuVvYN"  
      * }
      * @apiSuccessExample {json} Success
      *   {
@@ -52,6 +53,7 @@ export default class StudentController extends BaseApi {
      *          "phoneNumber" : "+14084991635",
      *          "email" : "harry@yahoo.com",
      *          "classId": "11D",
+     *          "imageLink": "https://bit.ly/3DuVvYN"
      *       },
      *       message: Student created successfully  
      *   }
@@ -67,7 +69,7 @@ export default class StudentController extends BaseApi {
     public createStudent = async (req: CustomRequest<CreateStudent>, res: Response<ApiResponse<Student> | ApiError>) => {
         try {
 
-            logger.info('creating a new student');
+            logger.info('Create a new student');
 
             const isCreated = await this.studentService.create(req?.body);
             if (isCreated) {
@@ -78,6 +80,7 @@ export default class StudentController extends BaseApi {
                 newStudent.email = req?.body?.email;
                 newStudent.phoneNumber = req?.body?.phoneNumber;
                 newStudent.classId = req?.body?.classId;
+                newStudent.imageLink = req.body?.imageLink;
 
                 res.status(StatusCodes.OK)
                     .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', newStudent, 'Student created successfully'));

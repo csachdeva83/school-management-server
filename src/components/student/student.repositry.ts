@@ -44,7 +44,7 @@ export class StudentRepositry extends Student{
                             });
                             return;
                         }
-                        logger.info('Created Password');
+                        logger.info('Password Created');
                         
                         // eslint-disable-next-line no-param-reassign
                         student.passwordId = result.insertId;
@@ -58,7 +58,8 @@ export class StudentRepositry extends Student{
                                 student.phoneNumber,
                                 student.email,
                                 student.classId,
-                                student.passwordId
+                                student.passwordId,
+                                student.imageLink
                             ],
                             (err3, resultSet2: ResultSetHeader) => {
                                 if (err3) {
@@ -95,5 +96,24 @@ export class StudentRepositry extends Student{
             });
 
         });
+    };
+
+    public async getbyId( studentId: string): Promise<Student> {
+        return new Promise((resolve, reject) => {
+
+            logger.info(`Get student details by id => ${studentId}`);
+
+            const sqlQuery = this.studentSql.GET_STUDENT_DETAILS_BY_ID;
+            POOL.query(sqlQuery, [studentId], (err, resultSet: ResultSetHeader) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+
+                resolve(resultSet?.[0]);
+            });
+
+        });
+
     };
 };

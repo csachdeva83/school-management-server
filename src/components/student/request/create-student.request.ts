@@ -59,4 +59,7 @@ export default class CreateStudent {
     @IsOptional()
     public passwordId: number;
 
+    @IsOptional()
+    public imageLink: string;
+
 };
