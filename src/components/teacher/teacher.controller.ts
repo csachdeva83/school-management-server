@@ -1,4 +1,4 @@
-import { Application, Response } from 'express';
+import { Application, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import makeValidateBody from '../../middleware/request-body-validator';
 import createLogger from '../../lib/logger';
@@ -24,6 +24,7 @@ export default class TeacherController extends BaseApi {
     public register(express: Application): void {
         express.use('/teacher', this.router);
         this.router.post('/create', makeValidateBody(CreateTeacher), this.createTeacher);
+        this.router.get('/get', this.getTeacher);
     }
 
     /**
@@ -92,6 +93,61 @@ export default class TeacherController extends BaseApi {
                 res.status(StatusCodes.EXPECTATION_FAILED)
                     .send(new ApiError(StatusCodes.EXPECTATION_FAILED, 'FAILURE', 'Teacher could not be created'));
             }
+
+        } catch (err: any) {
+            if (err?.status === 'FAILURE') {
+                logger.debug(err?.message);
+                logger.debug(err?.stack);
+                res.status(err?.statusCode ?? StatusCodes.INTERNAL_SERVER_ERROR)
+                    .send(new ApiError(err?.statusCode, err?.status, err.message, err.name));
+            }
+            else {
+                logger.error(err?.message);
+                logger.error(err?.stack);
+                res.status(err?.statusCode ?? StatusCodes.BAD_REQUEST)
+                    .send(new ApiError(err?.statusCode, 'ERROR', err.message, err.name));
+            }
+        }
+    };
+
+    /**
+     * Get teacher 
+     * 
+     * @api {post} /teacher/get 
+     * @apiParamExample (Request query) teacherId number
+     * @apiSuccessExample {json} Success
+     *   {
+     *       "statusCode": 200,
+     *       "status": "SUCCESS",
+     *       "data": {
+     *           "firstName": "Anil",
+     *           "lastName": "Batra",
+     *           "birthDate": "1975-03-06",
+     *           "email": "AnilBat@gmail.com",
+     *           "phoneNumber": "+14084991635",
+     *           "subjectName": "Physics",
+     *           "imageLink": "shorturl.at/abT69"
+     *       },
+     *       "message": "Get teacher successfully"
+     *   }
+     *  
+     * @apiErrorExample {json} Failure
+     *  {
+     *       status: ERROR || FAILURE,
+     *       statusCode: INTERNAL_SERVER_ERROR || BAD_REQUEST,
+     *       name: Error || ApiError,
+     *       message: err.message
+     *   }
+     */
+    public getTeacher = async (req: Request, res: Response<ApiResponse<Teacher> | ApiError>) => {
+        try {
+
+            logger.info(`Get teacher => ${req?.query?.teacherId}`);
+
+            const teacher = await this.teacherService.getById(String(req?.query?.teacherId));
+    
+            res.status(StatusCodes.OK)
+                .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', teacher, 'Get teacher successfully'));
 
         } catch (err: any) {
             if (err?.status === 'FAILURE') {

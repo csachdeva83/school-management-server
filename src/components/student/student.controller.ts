@@ -1,4 +1,4 @@
-import { Application, Response } from 'express';
+import { Application, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import makeValidateBody from '../../middleware/request-body-validator';
 import createLogger from '../../lib/logger';
@@ -25,6 +25,7 @@ export default class StudentController extends BaseApi {
     public register(express: Application): void {
         express.use('/student', this.router);
         this.router.post('/create', makeValidateBody(CreateStudent), this.createStudent);
+        this.router.get('/get', this.getStudent);
     }
 
     /**
@@ -108,6 +109,59 @@ export default class StudentController extends BaseApi {
         }
     };
 
+    /**
+     * Get student 
+     * 
+     * @api {post} /student/get 
+     * @apiParamExample (Request query) studentId number
+     * @apiSuccessExample {json} Success
+     *   {
+     *       "statusCode": 200,
+     *       "status": "SUCCESS",
+     *       "data": {
+     *          "firstName" : "Harry",
+     *          "lastName" : "Potter",
+     *          "birthDate" : "2002-16-09",
+     *          "phoneNumber" : "+14084991635",
+     *          "email" : "harry@yahoo.com",
+     *          "classId": "11D",
+     *          "imageLink": "https://bit.ly/3DuVvYN"
+     *       },
+     *       "message": "Get student successfully"
+     *   }
+     *  
+     * @apiErrorExample {json} Failure
+     *  {
+     *       status: ERROR || FAILURE,
+     *       statusCode: INTERNAL_SERVER_ERROR || BAD_REQUEST,
+     *       name: Error || ApiError,
+     *       message: err.message
+     *   }
+     */
+    public getStudent = async (req: Request, res: Response<ApiResponse<Student> | ApiError>) => {
+        try {
+
+            logger.info(`Get student => ${req?.query?.studentId}`);
+
+            const student = await this.studentService.getById(String(req?.query?.studentId));
     
+            res.status(StatusCodes.OK)
+                .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', student, 'Get student successfully'));
+
+        } catch (err: any) {
+            if (err?.status === 'FAILURE') {
+                logger.debug(err?.message);
+                logger.debug(err?.stack);
+                res.status(err?.statusCode ?? StatusCodes.INTERNAL_SERVER_ERROR)
+                    .send(new ApiError(err?.statusCode, err?.status, err.message, err.name));
+            }
+            else {
+                logger.error(err?.message);
+                logger.error(err?.stack);
+                res.status(err?.statusCode ?? StatusCodes.BAD_REQUEST)
+                    .send(new ApiError(err?.statusCode, 'ERROR', err.message, err.name));
+            }
+        }
+    };
 
 };
