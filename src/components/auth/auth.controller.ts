@@ -48,7 +48,7 @@ export default class AuthController extends BaseApi{
      *           "email": "AnilBat@gmail.com",
      *           "imageLink": "shorturl.at/abT69",
      *           "subjectName": "Physics" || "classId": "11A",
-     *           "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJUUjAwMSIsInNjaG9vbElkIjoxLCJpYXQiOjE2NjM1MTAwODMsImV4cCI6MTY2NDExNDg4M30.kE5pVpEIs91S-jd_51lKVEm16ITUpkERtbDjWEVyLHQ"
+     *           "token": "eyJhbGciOjaG9vbElkIjoxLCJpYXQiOjE2NjM1MTAwODMsImV4cCI6MTY2NDExNDg4M30.kE5pVpEIs91S-jd_51lKVEm16ITUpkERtbDjWEVyLHQ"
      *       },
      *       "message": "User logged in successfully"
      *   }
