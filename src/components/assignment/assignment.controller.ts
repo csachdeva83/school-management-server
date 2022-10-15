@@ -15,7 +15,6 @@ import SubmitAssignmentMarks from './request/submit-assignment-marks.request';
 
 const logger = createLogger('Assignment Controller');
 
-
 export default class AssignmentController extends BaseApi {
     
     constructor(express: Application, private assignmentService = new AssignmentService()) {
