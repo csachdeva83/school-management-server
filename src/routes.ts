@@ -1,6 +1,7 @@
 import * as express from 'express';
 import AssignmentController from './components/assignment/assignment.controller';
 import AuthController from './components/auth/auth.controller';
+import MarksController from './components/marks/marks.controller';
 import StudentController from './components/student/student.controller';
 import SyllabusController from './components/syllabus/syllabus.controller';
 import TeacherController from './components/teacher/teacher.controller';
@@ -13,4 +14,5 @@ export default function registerRoutes(app: express.Application): void {
     new AssignmentController(app);
     new TimeTableController(app);
     new SyllabusController(app);
+    new MarksController(app);
 }
