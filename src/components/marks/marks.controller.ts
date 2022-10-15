@@ -5,14 +5,14 @@ import BaseApi from '../base-api';
 import ApiResponse from '../../abstractions/api-responses';
 import ApiError from '../../abstractions/api-error';
 import { authenticateToken } from '../../middleware/jwt.middleware';
-import { SyllabusService } from './syllabus.service';
-import { Syllabus } from './syllabus.model';
+import { MarksService } from './marks.service';
+import Marks from './marks.model';
 
-const logger = createLogger('Syllabus Controller');
+const logger = createLogger('Marks Controller');
 
-export default class SyllabusController extends BaseApi {
+export default class MarksController extends BaseApi {
     
-    constructor(express: Application, private syllabusService = new SyllabusService()) {
+    constructor(express: Application, private marksService = new MarksService()) {
         super();
         this.register(express);
         if (process.env.pm_id === '0') logger.info(`Registering ${JSON.stringify(logger.defaultMeta?.service)}`);
@@ -20,20 +20,20 @@ export default class SyllabusController extends BaseApi {
 
 
     public register(express: Application): void {
-        express.use('/syllabus', this.router);
+        express.use('/marks', this.router);
         this.router.get('/get', authenticateToken, this.get);
 
     }
 
-    public get = async (req: Request, res: Response<ApiResponse<Syllabus[]> | ApiError>) => {
+    public get = async (req: Request, res: Response<ApiResponse<Marks[]> | ApiError>) => {
         try {
 
-            logger.info('Get syllabus');
+            logger.info('Get marks');
 
-            const syllabus = await this.syllabusService.get(String(req?.query?.classId),res?.locals?.schoolId);
+            const marks = await this.marksService.get(String(req?.query?.studentId),res?.locals?.schoolId);
     
             res.status(StatusCodes.OK)
-                .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', syllabus, 'Syllabus'));
+                .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', marks, 'Student marks for all exams and subjects'));
 
         } catch (err: any) {
             if (err?.status === 'FAILURE') {
