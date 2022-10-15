@@ -1,6 +1,6 @@
 import createLogger from '../../lib/logger';
 import TimeTable from './time-table.model';
-import { TimeTableRepositry } from './time-table.reposirty';
+import { TimeTableRepositry } from './time-table.repositry';
 
 const logger = createLogger('TimeTable Service');
 
