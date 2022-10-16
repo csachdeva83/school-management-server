@@ -6,7 +6,7 @@ import ApiResponse from '../../abstractions/api-responses';
 import ApiError from '../../abstractions/api-error';
 import { authenticateToken } from '../../middleware/jwt.middleware';
 import { SyllabusService } from './syllabus.service';
-import { Syllabus } from './syllabus.model';
+import { TSyllabus } from './syllabus.types';
 
 const logger = createLogger('Syllabus Controller');
 
@@ -25,7 +25,7 @@ export default class SyllabusController extends BaseApi {
 
     }
 
-    public get = async (req: Request, res: Response<ApiResponse<Syllabus[]> | ApiError>) => {
+    public get = async (req: Request, res: Response<ApiResponse<TSyllabus[]> | ApiError>) => {
         try {
 
             logger.info('Get syllabus');
