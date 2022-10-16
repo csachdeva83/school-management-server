@@ -1,6 +1,6 @@
 import createLogger from '../../lib/logger';
 import { TSyllabus } from './syllabus.types';
-import { SyllabusRepositry } from './syllabus.reposirty';
+import { SyllabusRepositry } from './syllabus.repositry';
 
 const logger = createLogger('Syllabus Service');
 
