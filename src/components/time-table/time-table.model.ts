@@ -18,5 +18,4 @@ export default class TimeTable {
 
     public eigthPeriod: string;
 
-
 };
