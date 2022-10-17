@@ -1,8 +1,10 @@
-version: '3.8'
+version: '3.3'
 
 services:
     school-management-server:
       container_name: school-management-server
       build: .
       ports:
-        - "5000:5000"
+        - "5000:5000"  
+        
+# Map port from 5000 to 5000 of localhost OR Map port from http port 80 to 5000 of localhost OR Map port from http port 443 to 5000 of localhost

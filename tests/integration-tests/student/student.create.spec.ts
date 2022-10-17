@@ -7,26 +7,23 @@ import IntegrationHelpers from '../../helpers/Integration-helpers';
 import CreateStudent from '../../../src/components/student/request/create-student.request';
 
 const student: CreateStudent = {
-     firstName : faker.name.firstName(),
-     lastName : faker.name.lastName(),
-     birthDate : '2005-03-06',
-     phoneNumber : '+14084991635',
-     email : faker.internet.email(),
-     classId: '11D', 
-     password: '11223344',
-     passwordId: null
-};
+    id: null,
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+    birthDate: '2005-03-06',
+    phoneNumber: '+14084991635',
+    email: faker.internet.email(),
+    classId: '11D',
+    password: '11223344',
+    passwordId: null,
+    imageLink: 'https://cdn4.iconfinder.com/data/icons/professions-bzzricon-flat/512/25_Student-512.png',
+    schoolId: 1
 
-function filterStudent(obj: any) {
-    return {
-        ...student,
-        ...obj
-    };
 };
 
 describe('Create Operation for Student with Errors', () => {
 
-    let app:express.Application;
+    let app: express.Application;
 
 
     beforeAll(async () => {
@@ -48,7 +45,7 @@ describe('Create Operation for Student with Errors', () => {
         expect(response.body.message).toEqual('Student created successfully');
     });
 
-    afterAll(async () => {        
+    afterAll(async () => {
         destructDB();
     });
 
