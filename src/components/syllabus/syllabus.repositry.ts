@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import { ResultSetHeader } from 'mysql2';
 import ApiError from '../../abstractions/api-error';
 import createLogger from '../../lib/logger';
-import { Syllabus } from './syllabus.model';
+import { TSyllabus } from './syllabus.types';
 import { SyllabusSql } from './syllabus.sql';
 
 const logger = createLogger('Syllabus Repositry');
@@ -11,7 +11,7 @@ export class SyllabusRepositry{
     
     constructor(private syllabusSql = new SyllabusSql()) {}
 
-    public async get( classId: string, schoolId: number): Promise<Syllabus[]> {
+    public async get( classId: string, schoolId: number): Promise<TSyllabus[]> {
         return new Promise((resolve, reject) => {
 
             logger.info(`Get syllabus for classId => ${classId}`);

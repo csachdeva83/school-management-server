@@ -5,14 +5,14 @@ import BaseApi from '../base-api';
 import ApiResponse from '../../abstractions/api-responses';
 import ApiError from '../../abstractions/api-error';
 import { authenticateToken } from '../../middleware/jwt.middleware';
-import { SyllabusService } from './syllabus.service';
-import { TSyllabus } from './syllabus.types';
+import { CircularService } from './circular.service';
+import Circular from './circular.model';
 
-const logger = createLogger('Syllabus Controller');
+const logger = createLogger('Circular Controller');
 
-export default class SyllabusController extends BaseApi {
+export default class CircularController extends BaseApi {
     
-    constructor(express: Application, private syllabusService = new SyllabusService()) {
+    constructor(express: Application, private circularService = new CircularService()) {
         super();
         this.register(express);
         if (process.env.pm_id === '0') logger.info(`Registering ${JSON.stringify(logger.defaultMeta?.service)}`);
@@ -20,20 +20,19 @@ export default class SyllabusController extends BaseApi {
 
 
     public register(express: Application): void {
-        express.use('/syllabus', this.router);
+        express.use('/circular', this.router);
         this.router.get('/get', authenticateToken, this.get);
 
     }
 
-    public get = async (req: Request, res: Response<ApiResponse<TSyllabus[]> | ApiError>) => {
+    public get = async (req: Request, res: Response<ApiResponse<Circular[]> | ApiError>) => {
         try {
 
-            logger.info('Get syllabus');
+            logger.info('Get circulars');
 
-            const syllabus = await this.syllabusService.get(String(req?.query?.classId),res?.locals?.schoolId);
-    
+            const circulars = await this.circularService.get(res.locals.schoolId);
             res.status(StatusCodes.OK)
-                .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', syllabus, 'Syllabus'));
+                .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', circulars, 'Circulars'));
 
         } catch (err: any) {
             if (err?.status === 'FAILURE') {

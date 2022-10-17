@@ -5,14 +5,13 @@ import BaseApi from '../base-api';
 import ApiResponse from '../../abstractions/api-responses';
 import ApiError from '../../abstractions/api-error';
 import { authenticateToken } from '../../middleware/jwt.middleware';
-import { SyllabusService } from './syllabus.service';
-import { TSyllabus } from './syllabus.types';
+import { AttendanceService } from './attendance.service';
 
-const logger = createLogger('Syllabus Controller');
+const logger = createLogger('Attendance Controller');
 
-export default class SyllabusController extends BaseApi {
+export default class AttendanceController extends BaseApi {
     
-    constructor(express: Application, private syllabusService = new SyllabusService()) {
+    constructor(express: Application, private attendanceService = new AttendanceService()) {
         super();
         this.register(express);
         if (process.env.pm_id === '0') logger.info(`Registering ${JSON.stringify(logger.defaultMeta?.service)}`);
@@ -20,20 +19,20 @@ export default class SyllabusController extends BaseApi {
 
 
     public register(express: Application): void {
-        express.use('/syllabus', this.router);
+        express.use('/attendance', this.router);
         this.router.get('/get', authenticateToken, this.get);
 
     }
 
-    public get = async (req: Request, res: Response<ApiResponse<TSyllabus[]> | ApiError>) => {
+    public get = async (req: Request, res: Response<ApiResponse<{presentPercentage: number, absentPercentage: number}> | ApiError>) => {
         try {
 
-            logger.info('Get syllabus');
+            logger.info('Get attendance');
 
-            const syllabus = await this.syllabusService.get(String(req?.query?.classId),res?.locals?.schoolId);
+            const attendance = await this.attendanceService.get(String(req?.query?.studentId));
     
             res.status(StatusCodes.OK)
-                .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', syllabus, 'Syllabus'));
+                .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', attendance, 'Attendance'));
 
         } catch (err: any) {
             if (err?.status === 'FAILURE') {
