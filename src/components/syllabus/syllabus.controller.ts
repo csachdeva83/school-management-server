@@ -33,7 +33,7 @@ export default class SyllabusController extends BaseApi {
             const syllabus = await this.syllabusService.get(String(req?.query?.classId),res?.locals?.schoolId);
     
             res.status(StatusCodes.OK)
-                .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', syllabus, 'Syllabus'));
+                .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', syllabus, 'Syllabus fetched successfully'));
 
         } catch (err: any) {
             if (err?.status === 'FAILURE') {
