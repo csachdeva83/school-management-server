@@ -47,7 +47,7 @@ export class TimeTableRepositry extends TimeTable{
                     reject(err);
                     return;
                 }
-
+                console.log(resultSet);
                 if (!resultSet?.[0]) {
                     reject(new ApiError(StatusCodes.EXPECTATION_FAILED, 'ERROR', 'No time table for given id.'));
                 }
