@@ -48,7 +48,7 @@ describe('Student Test Cases', () => {
         token = authResponse.body.data.token;
     });
 
-    it('Create Student', async () => {
+    it('Create student', async () => {
         const response = await request(app).post('/student/create').send(student);
 
         expect(response.body.status).toEqual('SUCCESS');
@@ -62,7 +62,7 @@ describe('Student Test Cases', () => {
         expect(response.body.message).toEqual('Student created successfully');
     });
 
-    it('Create Student without first name', async () => {
+    it('Create student without first name', async () => {
         const response = await request(app).post('/student/create').send(filterStudent({ firstName: undefined }));
 
         expect(response.body.status).toEqual('ERROR');
@@ -70,7 +70,7 @@ describe('Student Test Cases', () => {
         expect(response.body.message).toEqual('Model validation failed');
     });
 
-    it('Create Student without last name', async () => {
+    it('Create student without last name', async () => {
         const response = await request(app).post('/student/create').send(filterStudent({ lastName: undefined }));
 
         expect(response.body.status).toEqual('ERROR');
@@ -78,7 +78,7 @@ describe('Student Test Cases', () => {
         expect(response.body.message).toEqual('Model validation failed');
     });
 
-    it('Create Student without birth date', async () => {
+    it('Create student without birth date', async () => {
         const response = await request(app).post('/student/create').send(filterStudent({ birthDate: undefined }));
 
         expect(response.body.status).toEqual('ERROR');
@@ -86,7 +86,7 @@ describe('Student Test Cases', () => {
         expect(response.body.message).toEqual('Model validation failed');
     });
 
-    it('Create Student without phone number', async () => {
+    it('Create student without phone number', async () => {
         const response = await request(app).post('/student/create').send(filterStudent({ phoneNumber: undefined }));
 
         expect(response.body.status).toEqual('ERROR');
@@ -94,7 +94,7 @@ describe('Student Test Cases', () => {
         expect(response.body.message).toEqual('Model validation failed');
     });
 
-    it('Create Student without email', async () => {
+    it('Create student without email', async () => {
         const response = await request(app).post('/student/create').send(filterStudent({ email: undefined }));
 
         expect(response.body.status).toEqual('ERROR');
@@ -102,7 +102,7 @@ describe('Student Test Cases', () => {
         expect(response.body.message).toEqual('Model validation failed');
     });
 
-    it('Create Student without class id', async () => {
+    it('Create student without class id', async () => {
         const response = await request(app).post('/student/create').send(filterStudent({ classId: undefined }));
 
         expect(response.body.status).toEqual('ERROR');
@@ -110,7 +110,7 @@ describe('Student Test Cases', () => {
         expect(response.body.message).toEqual('Model validation failed');
     });
 
-    it('Create Student without password', async () => {
+    it('Create student without password', async () => {
         const response = await request(app).post('/student/create').send(filterStudent({ password: undefined }));
 
         expect(response.body.status).toEqual('ERROR');
@@ -118,7 +118,7 @@ describe('Student Test Cases', () => {
         expect(response.body.message).toEqual('Model validation failed');
     });
 
-    it('Create Student without image link', async () => {
+    it('Create student without image link', async () => {
         const response = await request(app).post('/student/create').send(filterStudent({ 
             imageLink: undefined,
             firstName: faker.name.firstName(),
@@ -131,7 +131,7 @@ describe('Student Test Cases', () => {
         expect(response.body.message).toEqual('Student created successfully');
     });
 
-    it('Create Student without school id', async () => {
+    it('Create student without school id', async () => {
         const response = await request(app).post('/student/create').send(filterStudent({ schoolId: undefined }));
 
         expect(response.body.status).toEqual('ERROR');
@@ -147,7 +147,7 @@ describe('Student Test Cases', () => {
         expect(response.body.message).toEqual('Get student successfully');
     });
 
-    it('Get Student for student id not in db', async () => {
+    it('Get student for student id not in db', async () => {
         const response = await request(app).get('/student/get').query({ studentId: 'ST999' }).send().set('x-access-token', token);;
 
         expect(response.body.status).toEqual('ERROR');
