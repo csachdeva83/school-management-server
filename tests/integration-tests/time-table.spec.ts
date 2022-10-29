@@ -76,7 +76,6 @@ describe('Time Table Test Cases', () => {
         
         expect(response.body.status).toEqual('ERROR');
         expect(response.body.statusCode).toEqual(417);
-        expect(response.body.message).toEqual('No time table for given id.');
         expect(response.body.message === 'No time table for given id.' 
         || response.body.message === 'No subject teacher mapping for given id.'
         ).toBe(true);
