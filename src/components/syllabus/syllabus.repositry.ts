@@ -1,5 +1,4 @@
 import { StatusCodes } from 'http-status-codes';
-import { ResultSetHeader } from 'mysql2';
 import ApiError from '../../abstractions/api-error';
 import createLogger from '../../lib/logger';
 import { TSyllabus } from './syllabus.types';
