@@ -21,7 +21,7 @@ export class AttendanceRepositry{
                     return;
                 }
 
-                if (!resultSet?.[0]) {
+                if (resultSet?.[0]?.present === 0) {
                     reject(new ApiError(StatusCodes.EXPECTATION_FAILED, 'ERROR', 'No count for given id.'));
                 }
                 
@@ -44,7 +44,7 @@ export class AttendanceRepositry{
                     return;
                 }
 
-                if (!resultSet?.[0]) {
+                if (resultSet?.[0]?.absent === 0) {
                     reject(new ApiError(StatusCodes.EXPECTATION_FAILED, 'ERROR', 'No count for given id.'));
                 }
 
@@ -67,7 +67,7 @@ export class AttendanceRepositry{
                     return;
                 }
 
-                if (!resultSet?.[0]) {
+                if (resultSet?.[0]?.total === 0) {
                     reject(new ApiError(StatusCodes.EXPECTATION_FAILED, 'ERROR', 'No count for given id.'));
                 }
 

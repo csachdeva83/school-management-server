@@ -32,7 +32,7 @@ export default class AttendanceController extends BaseApi {
             const attendance = await this.attendanceService.get(String(req?.query?.studentId));
     
             res.status(StatusCodes.OK)
-                .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', attendance, 'Attendance'));
+                .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', attendance, 'Attendance fetched successfully'));
 
         } catch (err: any) {
             if (err?.status === 'FAILURE') {
