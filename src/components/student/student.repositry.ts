@@ -1,4 +1,6 @@
+import { StatusCodes } from 'http-status-codes';
 import { ResultSetHeader } from 'mysql2';
+import ApiError from '../../abstractions/api-error';
 import createLogger from '../../lib/logger';
 import CreateStudent from './request/create-student.request';
 import Student from './student.model';
@@ -126,6 +128,10 @@ export class StudentRepositry extends Student{
                 if (err) {
                     reject(err);
                     return;
+                }
+
+                if (!resultSet?.[0]) {
+                    reject(new ApiError(StatusCodes.EXPECTATION_FAILED, 'ERROR', 'No student available for given id.'));
                 }
 
                 resolve(resultSet?.[0]);

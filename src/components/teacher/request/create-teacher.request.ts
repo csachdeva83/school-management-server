@@ -1,6 +1,6 @@
 import { IsInt, IsPhoneNumber, IsEmail, MaxLength, IsNotEmpty, IsOptional, IsArray } from 'class-validator';
 
-export default class CreateStudent {
+export default class CreateTeacher {
     
     @MaxLength(5, {
         message: 'id is maximum 5 character',

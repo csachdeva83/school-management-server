@@ -1,8 +1,10 @@
 import { ResultSetHeader } from 'mysql2';
+import { StatusCodes } from 'http-status-codes';
 import createLogger from '../../lib/logger';
 import Teacher from './teacher.model';
 import { TeacherSql } from './teacher.sql';
 import CreateTeacher from './request/create-teacher.request';
+import ApiError from '../../abstractions/api-error';
 
 const logger = createLogger('Teacher Repositry');
 
@@ -23,6 +25,11 @@ export class TeacherRepositry extends Teacher{
                     reject(err);
                     return;
                 }
+
+                if (!resultSet?.[0]) {
+                    reject(new ApiError(StatusCodes.EXPECTATION_FAILED, 'ERROR', 'No teacher available for given id.'));
+                }
+
                 resolve(resultSet?.[0]);
             });
 
