@@ -6,20 +6,21 @@ import IntegrationHelpers from '../helpers/Integration-helpers';
 
 let token: string;
 
+const syllabus = {
+    classId: '10A'
+};
+
+function filterSyllabus(obj: any){
+    return {
+        ...syllabus,
+        ...obj
+    };
+};
+
 describe('Syllabus Test Cases', () => {
 
     let app: express.Application;
 
-    const syllabus = {
-        classId: '10A'
-    };
-
-    function filterSyllabus(obj: any){
-        return {
-            ...syllabus,
-            ...obj
-        };
-    };
 
     beforeAll(async () => {
         app = await IntegrationHelpers.getApp();
