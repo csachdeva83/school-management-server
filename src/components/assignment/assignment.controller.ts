@@ -114,7 +114,7 @@ export default class AssignmentController extends BaseApi {
             const assignments = await this.assignmentService.upcoming(String(req?.query?.classId),res?.locals?.schoolId);
     
             res.status(StatusCodes.OK)
-                .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', assignments, 'Upcoming assignments'));
+                .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', assignments, 'Upcoming assignments fetched successfully'));
 
         } catch (err: any) {
             if (err?.status === 'FAILURE') {
@@ -140,7 +140,7 @@ export default class AssignmentController extends BaseApi {
             const assignments = await this.assignmentService.pending(String(req?.query?.studentId),res?.locals?.schoolId);
     
             res.status(StatusCodes.OK)
-                .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', assignments, 'Pending assignments'));
+                .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', assignments, 'Pending assignments fetched successfully'));
 
         } catch (err: any) {
             if (err?.status === 'FAILURE') {
@@ -166,7 +166,7 @@ export default class AssignmentController extends BaseApi {
             const assignments = await this.assignmentService.submitted(String(req?.query?.studentId),res?.locals?.schoolId);
     
             res.status(StatusCodes.OK)
-                .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', assignments, 'Submitted assignments'));
+                .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', assignments, 'Submitted assignments fetched successfully'));
 
         } catch (err: any) {
             if (err?.status === 'FAILURE') {
