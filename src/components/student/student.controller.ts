@@ -28,47 +28,6 @@ export default class StudentController extends BaseApi {
         this.router.get('/get', this.getStudent);
     }
 
-    /**
-     * Create new student 
-     * 
-     * @api {post} /student/create 
-     * @apiParamExample (Request body) {json} Input
-     * {
-     *      "id": null,    
-     *      "firstName" : "Harry",
-     *      "lastName" : "Potter",
-     *      "birthDate" : "2002-16-09",
-     *      "phoneNumber" : "+14084991635",
-     *      "email" : "harry@yahoo.com",
-     *      "classId": "11D",
-     *      "password": "11223344",
-     *      "imageLink": "https://bit.ly/3DuVvYN",
-     *      "schoolId": 1  
-     * }
-     * @apiSuccessExample {json} Success
-     *   {
-     *       statusCode: 200,
-     *       status : SUCCESS,
-     *       data: {
-     *          "firstName" : "Harry",
-     *          "lastName" : "Potter",
-     *          "birthDate" : "2002-16-09",
-     *          "phoneNumber" : "+14084991635",
-     *          "email" : "harry@yahoo.com",
-     *          "classId": "11D",
-     *          "imageLink": "https://bit.ly/3DuVvYN"
-     *       },
-     *       message: Student created successfully  
-     *   }
-     *  
-     * @apiErrorExample {json} Failure
-     *  {
-     *       status: ERROR || FAILURE,
-     *       statusCode: INTERNAL_SERVER_ERROR || BAD_REQUEST,
-     *       name: Error || ApiError,
-     *       message: err.message || Student could not be created
-     *   }
-     */
     public createStudent = async (req: CustomRequest<CreateStudent>, res: Response<ApiResponse<Student> | ApiError>) => {
         try {
 
@@ -109,35 +68,6 @@ export default class StudentController extends BaseApi {
         }
     };
 
-    /**
-     * Get student 
-     * 
-     * @api {post} /student/get 
-     * @apiParamExample (Request query) studentId number
-     * @apiSuccessExample {json} Success
-     *   {
-     *       "statusCode": 200,
-     *       "status": "SUCCESS",
-     *       "data": {
-     *          "firstName" : "Harry",
-     *          "lastName" : "Potter",
-     *          "birthDate" : "2002-16-09",
-     *          "phoneNumber" : "+14084991635",
-     *          "email" : "harry@yahoo.com",
-     *          "classId": "11D",
-     *          "imageLink": "https://bit.ly/3DuVvYN"
-     *       },
-     *       "message": "Get student successfully"
-     *   }
-     *  
-     * @apiErrorExample {json} Failure
-     *  {
-     *       status: ERROR || FAILURE,
-     *       statusCode: INTERNAL_SERVER_ERROR || BAD_REQUEST,
-     *       name: Error || ApiError,
-     *       message: err.message
-     *   }
-     */
     public getStudent = async (req: Request, res: Response<ApiResponse<Student> | ApiError>) => {
         try {
 

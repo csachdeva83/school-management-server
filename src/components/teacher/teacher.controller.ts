@@ -27,49 +27,6 @@ export default class TeacherController extends BaseApi {
         this.router.get('/get', this.getTeacher);
     }
 
-    /**
-     * Create new teacher 
-     * 
-     * @api {post} /teacher/create 
-     * @apiParamExample (Request body) {json} Input
-     *   {
-     *       "id": null,
-     *       "firstName" : "Anil",
-     *       "lastName" : "Batra",
-     *       "birthDate" : "1975-03-06",
-     *       "phoneNumber" : "+14084991635",
-     *       "email" : "AnilBat@gmail.com",
-     *       "subjectName": "Physics", 
-     *       "password": "11223344",
-     *       "passwordId": null,
-     *       "imageLink": "shorturl.at/abT69",
-     *       "schoolId": 1,
-     *       "subjectIds": [1,5]
-     *   }
-     * @apiSuccessExample {json} Success
-     *   {
-     *       "statusCode": 200,
-     *       "status": "SUCCESS",
-     *       "data": {
-     *           "firstName": "Anil",
-     *           "lastName": "Batra",
-     *           "birthDate": "1975-03-06",
-     *           "email": "AnilBat@gmail.com",
-     *           "phoneNumber": "+14084991635",
-     *           "subjectName": "Physics",
-     *           "imageLink": "shorturl.at/abT69"
-     *       },
-     *       "message": "Teacher created successfully"
-     *   }
-     *  
-     * @apiErrorExample {json} Failure
-     *  {
-     *       status: ERROR || FAILURE,
-     *       statusCode: INTERNAL_SERVER_ERROR || BAD_REQUEST,
-     *       name: Error || ApiError,
-     *       message: err.message || Teacher could not be created
-     *   }
-     */
     public createTeacher = async (req: CustomRequest<CreateTeacher>, res: Response<ApiResponse<Teacher> | ApiError>) => {
         try {
 
@@ -110,35 +67,6 @@ export default class TeacherController extends BaseApi {
         }
     };
 
-    /**
-     * Get teacher 
-     * 
-     * @api {post} /teacher/get 
-     * @apiParamExample (Request query) teacherId number
-     * @apiSuccessExample {json} Success
-     *   {
-     *       "statusCode": 200,
-     *       "status": "SUCCESS",
-     *       "data": {
-     *           "firstName": "Anil",
-     *           "lastName": "Batra",
-     *           "birthDate": "1975-03-06",
-     *           "email": "AnilBat@gmail.com",
-     *           "phoneNumber": "+14084991635",
-     *           "subjectName": "Physics",
-     *           "imageLink": "shorturl.at/abT69"
-     *       },
-     *       "message": "Get teacher successfully"
-     *   }
-     *  
-     * @apiErrorExample {json} Failure
-     *  {
-     *       status: ERROR || FAILURE,
-     *       statusCode: INTERNAL_SERVER_ERROR || BAD_REQUEST,
-     *       name: Error || ApiError,
-     *       message: err.message
-     *   }
-     */
     public getTeacher = async (req: Request, res: Response<ApiResponse<Teacher> | ApiError>) => {
         try {
 

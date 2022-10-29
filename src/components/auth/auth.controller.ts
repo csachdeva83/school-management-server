@@ -26,41 +26,6 @@ export default class AuthController extends BaseApi{
         this.router.post('/login', makeValidateBody(AuthLogin), this.authenticateUser);
     }
 
-    /**
-     * Authenticate User
-     * 
-     * @api {post} /auth/login 
-     * @apiParamExample (Request body) {json} Input
-     *   {
-     *       "schoolId": 1,
-     *       "userId": "TR001" || "ST001",
-     *       "password": "11223344"
-     *   }
-     * @apiSuccessExample {json} Success
-     *   {
-     *       "statusCode": 200,
-     *       "status": "SUCCESS",
-     *       "data": {
-     *           "firstName": "Anil",
-     *           "lastName": "Batra",
-     *           "birthdate": "1975-03-05T18:30:00.000Z",
-     *           "phoneNumber": "+14084991635",
-     *           "email": "AnilBat@gmail.com",
-     *           "imageLink": "shorturl.at/abT69",
-     *           "subjectName": "Physics" || "classId": "11A",
-     *           "token": "eyJhbGciOjaG9vbElkIjoxLCJpYXQiOjE2NjM1MTAwODMsImV4cCI6MTY2NDExNDg4M30.kE5pVpEIs91S-jd_51lKVEm16ITUpkERtbDjWEVyLHQ"
-     *       },
-     *       "message": "User logged in successfully"
-     *   }
-     *  
-     * @apiErrorExample {json} Failure
-     *  {
-     *       status: ERROR || FAILURE,
-     *       statusCode: INTERNAL_SERVER_ERROR || BAD_REQUEST,
-     *       name: Error || ApiError,
-     *       message: err.message || Bad Credentials
-     *   }
-     */
     public authenticateUser = async (req: CustomRequest<AuthLogin>, res: Response<ApiResponse<UserBody> | ApiError>) => {
         try {
 
