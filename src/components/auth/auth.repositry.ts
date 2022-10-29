@@ -1,4 +1,6 @@
+import { StatusCodes } from 'http-status-codes';
 import { ResultSetHeader } from 'mysql2';
+import ApiError from '../../abstractions/api-error';
 import createLogger from '../../lib/logger';
 import { AuthSql } from './auth.sql';
 
@@ -55,7 +57,9 @@ export class AuthRepositry {
                     reject(err);
                     return;
                 }
-
+                if(!resultSet?.[0]){
+                    reject(new ApiError(StatusCodes.EXPECTATION_FAILED, 'ERROR', 'No student available for given id.'));
+                }
                 resolve(resultSet?.[0]);
             });
 
@@ -74,7 +78,9 @@ export class AuthRepositry {
                     reject(err);
                     return;
                 }
-
+                if(!resultSet?.[0]){
+                    reject(new ApiError(StatusCodes.EXPECTATION_FAILED, 'ERROR', 'No teacher available for given id.'));
+                }
                 resolve(resultSet?.[0]);
             });
 
