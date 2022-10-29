@@ -32,7 +32,7 @@ export default class CircularController extends BaseApi {
 
             const circulars = await this.circularService.get(res.locals.schoolId);
             res.status(StatusCodes.OK)
-                .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', circulars, 'Circulars'));
+                .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', circulars, 'Circulars fetched successfully'));
 
         } catch (err: any) {
             if (err?.status === 'FAILURE') {
