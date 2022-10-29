@@ -36,7 +36,7 @@ export default class TimeTableController extends BaseApi {
             const timeTable = await this.timeTableService.get(String(req?.query?.classId),res?.locals?.schoolId);
     
             res.status(StatusCodes.OK)
-                .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', timeTable, 'Time Table'));
+                .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', timeTable, 'Time Table fetched successfully'));
 
         } catch (err: any) {
             if (err?.status === 'FAILURE') {
@@ -62,7 +62,7 @@ export default class TimeTableController extends BaseApi {
             const timetable = await this.timeTableService.getToday(String(req?.query?.classId),res?.locals?.schoolId);
     
             res.status(StatusCodes.OK)
-                .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', timetable, 'Time Table'));
+                .send(new ApiResponse(StatusCodes.OK, 'SUCCESS', timetable, 'Time Table fetched successfully'));
 
         } catch (err: any) {
             if (err?.status === 'FAILURE') {
