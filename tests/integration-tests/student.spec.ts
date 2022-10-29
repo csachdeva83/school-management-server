@@ -28,6 +28,8 @@ function filterStudent(obj: any) {
     };
 };
 
+let token: string;
+
 describe('Student Test Cases', () => {
 
     let app: express.Application;
@@ -36,6 +38,14 @@ describe('Student Test Cases', () => {
     beforeAll(async () => {
         app = await IntegrationHelpers.getApp();
         initializeDB();
+
+        const authResponse = await request(app).post('/auth/login').send({
+            schoolId: 1,
+            userId: 'ST004',
+            password: '11223344'
+        });
+
+        token = authResponse.body.data.token;
     });
 
     it('Create Student', async () => {
@@ -130,7 +140,7 @@ describe('Student Test Cases', () => {
     });
 
     it('Get Student', async () => {
-        const response = await request(app).get('/student/get').query({ studentId: 'ST004' }).send();
+        const response = await request(app).get('/student/get').query({ studentId: 'ST004' }).send().set('x-access-token', token);;
 
         expect(response.body.status).toEqual('SUCCESS');
         expect(response.body.statusCode).toEqual(200);
@@ -138,7 +148,7 @@ describe('Student Test Cases', () => {
     });
 
     it('Get Student for student id not in db', async () => {
-        const response = await request(app).get('/student/get').query({ studentId: 'ST999' }).send();
+        const response = await request(app).get('/student/get').query({ studentId: 'ST999' }).send().set('x-access-token', token);;
 
         expect(response.body.status).toEqual('ERROR');
         expect(response.body.statusCode).toEqual(417);

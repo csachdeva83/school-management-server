@@ -9,6 +9,7 @@ import ApiResponse from '../../abstractions/api-responses';
 import Student from './student.model';
 import ApiError from '../../abstractions/api-error';
 import { StudentService } from './student.service';
+import { authenticateToken } from '../../middleware/jwt.middleware';
 
 const logger = createLogger('Student Controller');
 
@@ -25,7 +26,7 @@ export default class StudentController extends BaseApi {
     public register(express: Application): void {
         express.use('/student', this.router);
         this.router.post('/create', makeValidateBody(CreateStudent), this.createStudent);
-        this.router.get('/get', this.getStudent);
+        this.router.get('/get', authenticateToken, this.getStudent);
     }
 
     public createStudent = async (req: CustomRequest<CreateStudent>, res: Response<ApiResponse<Student> | ApiError>) => {

@@ -29,6 +29,8 @@ function filterTeacher(obj: any) {
     };
 };
 
+let token: string;
+
 describe('Teacher Test Cases', () => {
 
     let app: express.Application;
@@ -37,6 +39,14 @@ describe('Teacher Test Cases', () => {
     beforeAll(async () => {
         app = await IntegrationHelpers.getApp();
         initializeDB();
+
+        const authResponse = await request(app).post('/auth/login').send({
+            schoolId: 1,
+            userId: 'TR001',
+            password: '11223344'
+        });
+
+        token = authResponse.body.data.token;
     });
 
     it('Create Teacher', async () => {
@@ -139,7 +149,7 @@ describe('Teacher Test Cases', () => {
     });
 
     it('Get Teacher', async () => {
-        const response = await request(app).get('/teacher/get').query({ teacherId: 'TR001' }).send();
+        const response = await request(app).get('/teacher/get').query({ teacherId: 'TR001' }).send().set('x-access-token', token);;
 
         expect(response.body.status).toEqual('SUCCESS');
         expect(response.body.statusCode).toEqual(200);
@@ -147,7 +157,7 @@ describe('Teacher Test Cases', () => {
     });
 
     it('Get Teacher for teacher id not in db', async () => {
-        const response = await request(app).get('/teacher/get').query({ teacherId: 'TR999' }).send();
+        const response = await request(app).get('/teacher/get').query({ teacherId: 'TR999' }).send().set('x-access-token', token);;
 
         expect(response.body.status).toEqual('ERROR');
         expect(response.body.statusCode).toEqual(417);

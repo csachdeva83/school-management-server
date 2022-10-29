@@ -9,6 +9,7 @@ import ApiResponse from '../../abstractions/api-responses';
 import Teacher from './teacher.model';
 import ApiError from '../../abstractions/api-error';
 import { TeacherService } from './teacher.service';
+import { authenticateToken } from '../../middleware/jwt.middleware';
 
 const logger = createLogger('Teacher Controller');
 
@@ -24,7 +25,7 @@ export default class TeacherController extends BaseApi {
     public register(express: Application): void {
         express.use('/teacher', this.router);
         this.router.post('/create', makeValidateBody(CreateTeacher), this.createTeacher);
-        this.router.get('/get', this.getTeacher);
+        this.router.get('/get', authenticateToken, this.getTeacher);
     }
 
     public createTeacher = async (req: CustomRequest<CreateTeacher>, res: Response<ApiResponse<Teacher> | ApiError>) => {
