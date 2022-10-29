@@ -17,7 +17,8 @@ export class AssignmentSql {
 
     public GET_PENDING_ASSIGNMENTS = `
         SELECT a.title, a.class_id AS classId, a.pdf_link AS pdfLink, a.total_marks AS totalMarks, a.submission_date AS submissionDate FROM assignments a 
-        WHERE a.submission_date < CURRENT_DATE() AND a.school_id = ? AND a.id NOT IN (SELECT sam.assignment_id FROM student_assignment_marks sam WHERE sam.student_id = ?);
+        INNER JOIN student s ON s.class_id = a.class_id 
+        WHERE a.submission_date < CURRENT_DATE() AND a.school_id = ? AND s.id = ? AND a.id NOT IN (SELECT sam.assignment_id FROM student_assignment_marks sam WHERE sam.student_id = ?);
     `;
 
     public GET_SUBMITTED_ASSIGNMENTS = `

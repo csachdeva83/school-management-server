@@ -96,7 +96,7 @@ export class AssignmentRepositry extends Assignment{
             logger.info(`Get pending assignments by studentId => ${studentId}`);
 
             const sqlQuery = this.assignmentSql.GET_PENDING_ASSIGNMENTS;
-            POOL.query(sqlQuery, [schoolId, studentId], (err, resultSet:any) => {
+            POOL.query(sqlQuery, [schoolId, studentId, studentId], (err, resultSet:any) => {
                 if (err) {
                     reject(err);
                     return;

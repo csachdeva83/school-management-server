@@ -1,7 +1,6 @@
 import 'jest';
 import express from 'express';
 import request from 'supertest';
-import { faker } from '@faker-js/faker';
 import { destructDB, initializeDB } from '../../src/configs/db.config';
 import IntegrationHelpers from '../helpers/Integration-helpers';
 import AuthLogin from '../../src/components/auth/request/login.request';

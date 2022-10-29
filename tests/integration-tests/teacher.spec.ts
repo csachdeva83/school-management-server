@@ -149,7 +149,7 @@ describe('Teacher Test Cases', () => {
     });
 
     it('Get teacher', async () => {
-        const response = await request(app).get('/teacher/get').query({ teacherId: 'TR001' }).send().set('x-access-token', token);;
+        const response = await request(app).get('/teacher/get').query({ teacherId: 'TR001' }).send().set('x-access-token', token);
 
         expect(response.body.status).toEqual('SUCCESS');
         expect(response.body.statusCode).toEqual(200);
@@ -157,7 +157,7 @@ describe('Teacher Test Cases', () => {
     });
 
     it('Get teacher for teacher id not in db', async () => {
-        const response = await request(app).get('/teacher/get').query({ teacherId: 'TR999' }).send().set('x-access-token', token);;
+        const response = await request(app).get('/teacher/get').query({ teacherId: 'TR999' }).send().set('x-access-token', token);
 
         expect(response.body.status).toEqual('ERROR');
         expect(response.body.statusCode).toEqual(417);
