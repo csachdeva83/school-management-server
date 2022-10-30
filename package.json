@@ -9,7 +9,7 @@
     "build": "npm run lint && tsc -p .",
     "start:local": "NODE_ENV=local nodemon index.js",
     "start:test": "NODE_ENV=test node build/src/server.js",
-    "start:production": "NODE_ENV=production pm2-runtime start build/src/server.js -i 2",
+    "start:production": "NODE_ENV=production pm2-runtime start build/src/server.js -i 3",
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
     "pretty": "prettier --write \"src/**/*.ts\"",

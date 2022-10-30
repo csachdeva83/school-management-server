@@ -1,6 +1,4 @@
-import * as fs from 'fs';
 import * as path from 'path';
-import { config as configDotenv } from 'dotenv';
 
 import { EnvironmentFile, Environments } from './environment.constant';
 import IEnvironment from './environment.interface';
@@ -59,12 +57,10 @@ class Environment implements IEnvironment {
           envPath = path.resolve(rootdir, EnvironmentFile.LOCAL);
           break;
         default:
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           envPath = path.resolve(rootdir, EnvironmentFile.LOCAL);
       }
-      if (!fs.existsSync(envPath)) {
-        throw new Error('.env file is missing in root directory');
-      }
-      configDotenv({ path: envPath });
+
     }
 
     public isProductionEnvironment(): boolean {
